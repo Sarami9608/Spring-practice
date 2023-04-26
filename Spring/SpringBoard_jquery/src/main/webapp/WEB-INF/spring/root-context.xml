@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- 의존성 주입 -->
+	<!-- 외부에서 만들어진 객체를 사용 ioc 컨테이너에 보관 -->
+	<!-- HikariCP 빈(bean == 객체)등록 -->
+	<!-- id = 객체이름
+		class = 경로
+		property = 속성  -->
+  	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <!-- localhost/MySQL 스키마이름 -->
+        <property name="jdbcUrl" value="jdbc:mysql://localhost/spring?serverTimezone=UTC"/>
+        <property name="username" value="root"/>
+        <property name="password" value="1234"/>
+    </bean>
+    <!-- Datasource = Spring을 통해서 MySQL에 접근 -->
+    
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+    <!-- ref hikari id reference  -->
+       <constructor-arg ref="hikariConfig" />
+    </bean>
+    <!-- Mybatis -->
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean">
+          <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--mybatis-spring : scan - mapper가 존재하는 경로를 스캔할 수 있도록!  -->
+    <!-- namespace에서 mybatis spring check  -->
+    <mybatis-spring:scan base-package="com.smhrd.mapper"/>
+    
+</beans>

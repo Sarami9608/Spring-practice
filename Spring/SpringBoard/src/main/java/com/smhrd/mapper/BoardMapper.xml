@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smhrd.mapper.BoardMapper">
+  <select id="boardList" resultType="com.smhrd.domain.Board">
+  	select * from board 
+  </select>
+  <select id="boardContent" parameterType="int" resultType="com.smhrd.domain.Board">
+  	select * from board where idx = #{idx}
+  </select>
+    <insert id="writeBoard" parameterType="com.smhrd.domain.Board">
+  	insert into board (title,content,writer) values (#{title},#{content},#{writer})
+  </insert>
+  <update id="updateBoard" parameterType="com.smhrd.domain.Board">
+  	update board set title = #{title}, content = #{content} where idx = #{idx}
+  </update>
+</mapper>
